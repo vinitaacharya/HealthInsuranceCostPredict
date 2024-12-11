@@ -1,0 +1,25 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    column-gap: 10px;
+    row-gap: 10px;
+    justify-content:center; /*applies on the main axis*/
+    align-items: center;   /*applies on the cross axis*/
+    width: 100%;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    background-color: white;
+}
+
+.selectTarget{
+    display: flex;
+    flex-direction: row;
+    background-color: rgb(162, 121, 190);
+    justify-content: center;
+    padding: 15px;
+    width: 100%;
+}
+
+.selectTarget h3 {
+    margin: 0 10px 0 0;
+}

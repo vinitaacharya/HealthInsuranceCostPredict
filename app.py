@@ -139,7 +139,7 @@ def update_output(selected_option, select_radio):
         return {}, {}
 
     # Correlation graph
-    corr = finaldf.corr()
+    corr = numdf.corr()
     targetcorr = corr[selected_option].drop(selected_option, errors='ignore')
     corrdf = targetcorr.reset_index()
     corrdf.columns = ['Numerical Variables', 'Correlation Strength']

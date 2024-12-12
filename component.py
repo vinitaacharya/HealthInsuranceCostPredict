@@ -18,14 +18,10 @@ import pandas as pd
 url = 'https://drive.google.com/file/d/1cKvL6ZuqTAmMDBjbSERP-GviJQrJzDjY/view?usp=sharing'
 path = 'https://drive.google.com/uc?export=download&id='+url.split('/')[-2]
 df = pd.read_csv(path)
-catdf = df.select_dtypes(include=['object']).columns
+catdf = df.select_dtypes(include=['object'])
 finaldf = pd.get_dummies(df, columns=['sex', 'smoker', 'region'], dtype=int)
-print(finaldf.head())
 numdf=finaldf.drop(['sex_female', 'sex_male','smoker_no', 'smoker_yes', 'region_northeast', 'region_northwest','region_southeast', 'region_southwest'], axis=1)
-catdf = df.select_dtypes(include=['object']).columns
 #END of testing data; TEMPORARY
-
-
 
 
 
@@ -54,31 +50,40 @@ app.layout = html.Div(
             value=numdf.columns[0],
             style={'width': '150px'}
         )]),
-        html.Div(id='output', style={'fontSize': '22px'}),  # Placeholder for output
         dcc.RadioItems(
            id='radio',
            options = optionsCat,
-           value = df['sex'].unique()[0],
+           value = optionsCat[0],
            inline=True
            
         ),
-        dcc.Graph(id='corrBar')
+        dcc.Graph(id='corrBar'),
+        dcc.Graph(id='avgBar')
+
     ]
 )
 
 
 #------------------------------------Callback block starts
-@app.callback([Output('output', 'children'),Output('corrBar', 'figure')],[Input('dropdown', 'value')])
-def update_output(selected_option):
+@app.callback([Output('corrBar', 'figure'), Output('avgBar', 'figure')],[Input('dropdown', 'value'), Input('radio', 'value')])
+def update_output(selected_option, select_radio):
     corr = numdf.corr()
     corr = corr.drop(selected_option, axis=0)
     targetcorr = corr[selected_option]
     
     corrdf = targetcorr.reset_index()
     corrdf.columns = ['Numerical Variables', 'Correlation Strength'] 
-    fig = px.bar(corrdf, x='Numerical Variables', y='Correlation Strength', title=f'Correlation Strength of numerical variables with {selected_option}')
+    figCorr = px.bar(corrdf, x='Numerical Variables', y='Correlation Strength', title=f'Correlation Strength of numerical variables with {selected_option}')
 
-    return f'Average {selected_option} by', fig
+    avgdf = df.groupby(select_radio)[selected_option].mean()
+   # groupedCat = df.groupby(select_radio)
+   # avgdf = groupedCat[selected_option].mean()
+    
+    figAvg = px.bar(avgdf, title = 'Avg' )
+
+       
+
+    return figCorr, figAvg
 #------------------------------------Callback block ends
 
 if __name__ == '__main__':

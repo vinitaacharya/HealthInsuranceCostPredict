@@ -17,6 +17,7 @@ executing==2.1.0
 fastapi==0.115.5
 Flask==3.0.3
 freez==0.0.0
+gunicorn==23.0.0
 h11==0.14.0
 idna==3.10
 importlib_metadata==8.5.0

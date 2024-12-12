@@ -90,15 +90,16 @@ def process_upload(contents, filename):
     catdf_encoded = encoder.fit_transform(catdf)
     
     # Convert the result to a DataFrame with proper column names
-    catdf = pd.DataFrame(catdf_encoded, columns=encoder.get_feature_names_out(catdf.columns))
+    catdf_encoded = pd.DataFrame(catdf_encoded, columns=encoder.get_feature_names_out(catdf.columns))
 
     # Normalize/standardize numerical data
     scaler = StandardScaler()
     numdf_scaled = pd.DataFrame(scaler.fit_transform(numdf), columns=numdf.columns)
 
     # Combine processed data
-    processed_data = pd.concat([numdf_scaled, catdf], axis=1)
+    finaldf = pd.concat([numdf_scaled, catdf_encoded], axis=1)
 
+    #THIS IS SO I CAN SEE THE DATA
     # Return all elements wrapped in a single Div container
     return [
         html.Div([
@@ -106,10 +107,12 @@ def process_upload(contents, filename):
             generate_table(uploaded_data),
             html.H5("Numerical Data (Imputed)"),
             generate_table(numdf_scaled),
-            html.H5("Categorical Data (Imputed)"),
+            html.H5("Categorical Data (OG)"),
             generate_table(catdf),
+            html.H5("Categorical Data (Imputed)"),
+            generate_table(catdf_encoded),
             html.H5("Processed Data"),
-            generate_table(processed_data)
+            generate_table(finaldf)
         ])
     ]
 #---------UPLOAD END--------------------------------------------------------

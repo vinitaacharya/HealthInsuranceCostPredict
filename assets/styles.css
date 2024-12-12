@@ -23,3 +23,40 @@
 .selectTarget h3 {
     margin: 0 10px 0 0;
 }
+
+.bargraphs{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 500px;
+    margin: 10px;
+    gap: 5%;
+    justify-content:center;
+    align-items: center
+}
+.radioclass{
+    display: flex;
+    flex-direction: column;
+    width: 43%;
+    justify-content: center;
+    align-items: center;
+    border: 1px, solid;
+    height: 100%;
+    border-color: rgb(163, 116, 151);
+}
+.corrclass{
+    display: flex;
+    flex-direction: column;
+    width:43%;
+    justify-content: center;
+    align-items: center;
+    border: 1px, solid;
+    border-color: rgb(163, 116, 151);
+    height: 100%;
+}
+#corrBar{
+    width: 95%;
+}
+#avgBar{
+    width: 95%;
+}

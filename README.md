@@ -1,1 +1,1 @@
-**View app here:** https://milestone4-app-c75d3cadc27a.herokuapp.com/app.py
+**View app here:** https://milestone4-app-c75d3cadc27a.herokuapp.com

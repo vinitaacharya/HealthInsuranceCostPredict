@@ -2,6 +2,7 @@ import dash
 from dash import dcc, html
 from dash.dependencies import Input, Output
 import plotly.express as px
+import plotly.graph_objects as go
 
 app = dash.Dash(__name__)
 
@@ -50,16 +51,24 @@ app.layout = html.Div(
             value=numdf.columns[0],
             style={'width': '150px'}
         )]),
-        dcc.RadioItems(
-           id='radio',
-           options = optionsCat,
-           value = optionsCat[0],
-           inline=True
-           
+        html.Div(
+           className="bargraphs",
+           children = [
+            html.Div(
+              className="radioclass",
+              children = [
+                dcc.RadioItems(
+                    id='radio',
+                    options = optionsCat,
+                    value = optionsCat[0],
+                    inline=True),
+                dcc.Graph(id='avgBar')]),
+            html.Div(
+               className="corrclass",
+               children = [dcc.Graph(id='corrBar')]
+            )
+           ]
         ),
-        dcc.Graph(id='corrBar'),
-        dcc.Graph(id='avgBar')
-
     ]
 )
 
@@ -73,14 +82,13 @@ def update_output(selected_option, select_radio):
     
     corrdf = targetcorr.reset_index()
     corrdf.columns = ['Numerical Variables', 'Correlation Strength'] 
-    figCorr = px.bar(corrdf, x='Numerical Variables', y='Correlation Strength', title=f'Correlation Strength of numerical variables with {selected_option}')
+    figCorr = px.bar(corrdf, x='Numerical Variables', y='Correlation Strength', text_auto=True)
+    figCorr.update_layout(title_text=f'Correlation Strength of numerical variables with {selected_option}', title_x=0.5)
 
     avgdf = df.groupby(select_radio)[selected_option].mean()
-   # groupedCat = df.groupby(select_radio)
-   # avgdf = groupedCat[selected_option].mean()
     
-    figAvg = px.bar(avgdf, title = 'Avg' )
-
+    figAvg = px.bar(avgdf, y =selected_option, text_auto=True)
+    figAvg.update_layout(title_text=f'Average {selected_option} by {select_radio}', title_x=0.5)
        
 
     return figCorr, figAvg

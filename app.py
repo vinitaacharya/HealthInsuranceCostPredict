@@ -26,25 +26,29 @@ app.layout = html.Div([
         dcc.Upload(
             id='upload-data',
             children=html.Div([  # Button for uploading CSV
-                html.Button("Upload CSV File", style={
+                html.Button("Upload CSV File Here", style={
                     "padding": "10px 20px",
-                    "border": "2px solid #007BFF",
-                    "background-color": "#007BFF",
-                    "color": "white",
-                    "font-size": "16px",
+                    "color": "rgb(165, 113, 199)",
+                    "font-size": "20px",
+                    "letter-spacing": "1px",
+                    "font-weight": "4px",
                     "cursor": "pointer",
-                    "border-radius": "5px",
-                    "text-align": "center"
+                    "text-align": "center",
+                    "border" : "0px",
+                    "border-radius": "10px",
+                    "font-family" : "'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif",
+                    "background-color" : "#faf9f9"
                 })
             ]),
             multiple=False,
             style={  # Upload box style
                 "width": "100%",
-                "border": "1px dashed #007BFF",
-                "border-radius": "10px",
+                "border": "2px dashed rgb(165, 113, 199)",
+                "border-radius" : "5px",
                 "text-align": "center",
                 "padding": "20px",
-                "margin-top": "10px"
+                "margin-top": "10px",
+                "background-color" : "#faf9f9"
             }
         ),
         html.Div(id='upload-output', style={'marginTop': 10})
@@ -58,7 +62,7 @@ app.layout = html.Div([
                 className="selectTarget",
                 children=[
                     html.H3("Select Target Variable:"),
-                    dcc.Dropdown(id='dropdown', style={'width': '150px'}),
+                    dcc.Dropdown(id='dropdown', style={'width': '150px', 'color': 'black'}),
                 ]
             ),
             # Bar charts components (30 points): Analyze dataset using two bar charts

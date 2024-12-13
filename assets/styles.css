@@ -43,6 +43,7 @@
     border: 1px, solid;
     height: 100%;
     border-color: rgb(163, 116, 151);
+    border-radius: 5px;
 }
 .corrclass{
     display: flex;
@@ -53,10 +54,20 @@
     border: 1px, solid;
     border-color: rgb(163, 116, 151);
     height: 100%;
+    border-radius: 5px;
 }
 #corrBar{
     width: 95%;
 }
 #avgBar{
     width: 95%;
+}
+
+.selectTarget{
+    color: white;
+}
+
+html{
+    background-color: #faf9f9;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }

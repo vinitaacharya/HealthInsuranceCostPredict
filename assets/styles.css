@@ -71,3 +71,72 @@ html{
     background-color: #faf9f9;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
+
+#upload-output{
+    align-items: center;
+    justify-self: center;
+    margin-bottom:5px;
+    color: rgb(30, 9, 41)
+}
+
+.trainsec{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px, solid;
+    border-color: rgb(163, 116, 151);
+    border-radius: 5px;
+    margin: 5px;
+}
+.predictsec{
+    margin: 5px;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px, solid;
+    border-color: rgb(163, 116, 151);
+    border-radius: 5px;
+}
+
+.btn {
+    cursor: pointer;
+    border: 0px solid rgb(187, 204, 0);
+    font-family: "system-ui";
+    font-size: 14px;
+    color: rgb(255, 255, 255);
+    padding: 10px 30px;
+    transition: 717ms;
+    width: 20.5%;
+    box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+    border-radius: 50px;
+    background: linear-gradient(153deg, rgb(163, 116, 151) 20%, rgb(102, 125, 212) 100%);
+    --hover-color: #a37497;
+    --hover-borderSize: 0px;
+    --hover-bgc: #ffffff;
+}
+
+.btn:hover{
+color: rgb(163, 116, 151);
+width: 21%;
+background: rgb(255, 255, 255) none repeat scroll 0% 0% / auto padding-box border-box;
+border-width: 0px;
+border-style: solid;
+}
+
+input[type=text], select {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+input[type=text]:focus, select:focus {
+    border: 2px solid #000;
+    outline: none;
+}

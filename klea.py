@@ -53,37 +53,85 @@ app.layout = html.Div([
     html.Div([
         dcc.Upload(
             id='upload-data',
-            children=html.Button("Upload CSV File Here", style={
-                "padding": "10px 20px", "font-size": "20px", "cursor": "pointer"
-            }),
-            multiple=False
+            children=html.Div([
+                html.Button("Upload CSV File Here", style={
+                    "padding": "10px 20px",
+                    "color": "rgb(165, 113, 199)",
+                    "font-size": "20px",
+                    "letter-spacing": "1px",
+                    "font-weight": "4px",
+                    "cursor": "pointer",
+                    "text-align": "center",
+                    "border" : "0px",
+                    "border-radius": "10px",
+                    "font-family" : "'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif",
+                    "background-color" : "#faf9f9"
+                })
+            ]),
+            multiple=False,
+            style={  # Upload box style
+                "width": "100%",
+                "border": "2px dashed rgb(165, 113, 199)",
+                "border-radius" : "5px",
+                "text-align": "center",
+                "padding": "20px",
+                "margin-top": "10px",
+                "background-color" : "#faf9f9"
+            }
         ),
-        html.Div(id='upload-output', style={'marginTop': 10})
+        html.Div(id='upload-output', style={'marginTop': 10, "justify-content": "center"})
     ]),
 
     # Target Variable Selection and Bar Charts
-    html.Div([
-        html.H3("Select Target Variable:"),
-        dcc.Dropdown(id='dropdown', style={'width': '150px'}),
-        dcc.RadioItems(id='radio', inline=True),
-        dcc.Graph(id='avgBar'),
-        dcc.Graph(id='corrBar')
-    ]),
+    html.Div(
+        className="container",
+        children= [
+            html.Div(
+                className="selectTarget",
+                children=[
+                    html.H3("Select Target Variable:"),
+                    dcc.Dropdown(id='dropdown', style={'width': '150px'})
+                ]
+            ),
+            html.Div(
+                className="bargraphs",
+                children=[
+                    html.Div(
+                        className="radioclass",
+                        children=[
+                            dcc.RadioItems(id='radio', inline=True),
+                            dcc.Graph(id='avgBar'),
+                        ]
+                    ),
+                    html.Div(
+                        className="corrclass",
+                        children=[
+                            dcc.Graph(id='corrBar')
+                        ]
+                    )
+                ]
+            )
+        ]
+    ),
 
     # Train Component
-    html.Div([
-        html.H3("Train Model"),
-        html.Div(id='feature-checkboxes', style={'marginTop': '10px'}),
-        html.Button("Train Model", id='train-button', n_clicks=0),
-        html.Div(id='train-output', style={'marginTop': '10px'})
+    html.Div(
+        className="trainsec",
+        children = [
+            html.H3("Train Model"),
+            html.Div(id='feature-checkboxes', style={'marginTop': '10px'}),
+            html.Button("Train Model", id='train-button', className='btn', n_clicks=0),
+            html.Div(id='train-output', style={'marginTop': '10px'})
     ]),
 
     # Predict Component
-    html.Div([
-        html.H3("Predict Target Variable"),
-        dcc.Input(id='predict-input', placeholder='Enter feature values separated by commas', type='text', style={'width': '100%'}),
-        html.Button("Predict", id='predict-button', n_clicks=0),
-        html.Div(id='predict-output', style={'marginTop': '10px'})
+    html.Div(
+        className="predictsec",
+        children = [
+            html.H3("Predict Target Variable"),
+            dcc.Input(id='predict-input', placeholder='Enter feature values separated by commas', type='text', style={'width': '40%', 'margin' : '5px', 'border-color' : 'white'}),
+            html.Button("Predict", id='predict-button', className='btn', n_clicks=0),
+            html.Div(id='predict-output', style={'marginTop': '10px'})
     ])
 ])
 

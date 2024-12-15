@@ -70,10 +70,12 @@ app.layout = html.Div([
             ]),
             multiple=False,
             style={  # Upload box style
-                "width": "100%",
+                "width": "90%",
                 "border": "2px dashed rgb(165, 113, 199)",
                 "border-radius" : "5px",
                 "text-align": "center",
+                "justify-content": "center",
+                "justify-self": "center",
                 "padding": "20px",
                 "margin-top": "10px",
                 "background-color" : "#faf9f9"
@@ -116,6 +118,9 @@ app.layout = html.Div([
 
     # Train Component
     html.Div(
+    className='last',
+    children = [
+    html.Div(
         className="trainsec",
         children = [
             html.H3("Train Model"),
@@ -132,6 +137,7 @@ app.layout = html.Div([
             dcc.Input(id='predict-input', placeholder='Enter feature values separated by commas', type='text', style={'width': '40%', 'margin' : '5px', 'border-color' : 'white'}),
             html.Button("Predict", id='predict-button', className='btn', n_clicks=0),
             html.Div(id='predict-output', style={'marginTop': '10px'})
+    ])
     ])
 ])
 

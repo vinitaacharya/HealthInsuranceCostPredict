@@ -17,7 +17,7 @@
     background-color: rgb(162, 121, 190);
     justify-content: center;
     padding: 15px;
-    width: 100%;
+    width:inherit;
 }
 
 .selectTarget h3 {
@@ -88,6 +88,7 @@ html{
     border-color: rgb(163, 116, 151);
     border-radius: 5px;
     margin: 5px;
+    width: 91%;
 }
 .predictsec{
     margin: 5px;
@@ -99,6 +100,7 @@ html{
     border: 1px, solid;
     border-color: rgb(163, 116, 151);
     border-radius: 5px;
+    width: 91%;
 }
 
 .btn {
@@ -139,4 +141,11 @@ input[type=text], select {
 input[type=text]:focus, select:focus {
     border: 2px solid #000;
     outline: none;
+}
+
+.last{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }

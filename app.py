@@ -178,10 +178,18 @@ def update_charts(selected_option, select_radio):
     if finaldf is None:
         raise PreventUpdate
 
-    corr = numdf.corr()[selected_option].drop(selected_option, errors='ignore')
-    figCorr = px.bar(corr, text_auto=True)
+    corr = numdf.corr()
+    targetcorr = corr[selected_option].drop(selected_option, errors='ignore')
+    corrdf = targetcorr.reset_index()
+    corrdf.columns = ['Numerical Variables', 'Correlation Strength']
+    figCorr = px.bar(corrdf, x='Numerical Variables', y='Correlation Strength', text_auto=True)
+    figCorr.update_layout(title_text=f'Correlation Strength of numerical variables with {selected_option}', title_x=0.5)
+
+    # Average graph
     avgdf = uploaded_data.groupby(select_radio)[selected_option].mean().reset_index()
     figAvg = px.bar(avgdf, x=select_radio, y=selected_option, text_auto=True)
+    figAvg.update_layout(title_text=f'Average {selected_option} by {select_radio}', title_x=0.5)
+
     return figCorr, figAvg
 
 @app.callback(

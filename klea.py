@@ -6,7 +6,6 @@ import numpy as np
 import pandas as pd
 import base64
 import io
-import os
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
 from sklearn.impute import SimpleImputer
@@ -16,12 +15,14 @@ from dash.exceptions import PreventUpdate
 
 app = dash.Dash(__name__, suppress_callback_exceptions=True)
 
+# Global Variables
 uploaded_data = None
 numdf = None
 catdf = None
 finaldf = None
 trained_model = None
 
+# Function to process uploaded file
 def process_upload(contents):
     content_type, content_string = contents.split(',')
     decoded = base64.b64decode(content_string).decode('utf-8')
@@ -48,99 +49,47 @@ def process_upload(contents):
     finaldf = pd.concat([numdf_scaled, catdf_encoded], axis=1)
     return uploaded_data, numdf, catdf, finaldf
 
+# App Layout
 app.layout = html.Div([
     # Upload Component
     html.Div([
         dcc.Upload(
             id='upload-data',
-            children=html.Div([
-                html.Button("Upload CSV File Here", style={
-                    "padding": "10px 20px",
-                    "color": "rgb(165, 113, 199)",
-                    "font-size": "20px",
-                    "letter-spacing": "1px",
-                    "font-weight": "4px",
-                    "cursor": "pointer",
-                    "text-align": "center",
-                    "border" : "0px",
-                    "border-radius": "10px",
-                    "font-family" : "'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif",
-                    "background-color" : "#faf9f9"
-                })
-            ]),
-            multiple=False,
-            style={  # Upload box style
-                "width": "90%",
-                "border": "2px dashed rgb(165, 113, 199)",
-                "border-radius" : "5px",
-                "text-align": "center",
-                "justify-content": "center",
-                "justify-self": "center",
-                "padding": "20px",
-                "margin-top": "10px",
-                "background-color" : "#faf9f9"
-            }
+            children=html.Button("Upload CSV File Here", style={
+                "padding": "10px 20px", "font-size": "20px", "cursor": "pointer"
+            }),
+            multiple=False
         ),
-        html.Div(id='upload-output', style={'marginTop': 10, "justify-content": "center"})
+        html.Div(id='upload-output', style={'marginTop': 10})
     ]),
 
     # Target Variable Selection and Bar Charts
-    html.Div(
-        className="container",
-        children= [
-            html.Div(
-                className="selectTarget",
-                children=[
-                    html.H3("Select Target Variable:"),
-                    dcc.Dropdown(id='dropdown', style={'width': '150px', 'color' : 'black'})
-                ]
-            ),
-            html.Div(
-                className="bargraphs",
-                children=[
-                    html.Div(
-                        className="radioclass",
-                        children=[
-                            dcc.RadioItems(id='radio', inline=True),
-                            dcc.Graph(id='avgBar'),
-                        ]
-                    ),
-                    html.Div(
-                        className="corrclass",
-                        children=[
-                            dcc.Graph(id='corrBar')
-                        ]
-                    )
-                ]
-            )
-        ]
-    ),
+    html.Div([
+        html.H3("Select Target Variable:"),
+        dcc.Dropdown(id='dropdown', style={'width': '150px'}),
+        dcc.RadioItems(id='radio', inline=True),
+        dcc.Graph(id='avgBar'),
+        dcc.Graph(id='corrBar')
+    ]),
 
     # Train Component
-    html.Div(
-    className='last',
-    children = [
-    html.Div(
-        className="trainsec",
-        children = [
-            html.H3("Train Model"),
-            html.Div(id='feature-checkboxes', style={'marginTop': '10px'}),
-            html.Button("Train Model", id='train-button', className='btn', n_clicks=0),
-            html.Div(id='train-output', style={'marginTop': '10px'})
+    html.Div([
+        html.H3("Train Model"),
+        html.Div(id='feature-checkboxes', style={'marginTop': '10px'}),
+        html.Button("Train Model", id='train-button', n_clicks=0),
+        html.Div(id='train-output', style={'marginTop': '10px'})
     ]),
 
     # Predict Component
-    html.Div(
-        className="predictsec",
-        children = [
-            html.H3("Predict Target Variable"),
-            dcc.Input(id='predict-input', placeholder='Enter feature values separated by commas', type='text', style={'width': '40%', 'margin' : '5px', 'border-color' : 'white'}),
-            html.Button("Predict", id='predict-button', className='btn', n_clicks=0),
-            html.Div(id='predict-output', style={'marginTop': '10px'})
-    ])
+    html.Div([
+        html.H3("Predict Target Variable"),
+        dcc.Input(id='predict-input', placeholder='Enter feature values separated by commas', type='text', style={'width': '100%'}),
+        html.Button("Predict", id='predict-button', n_clicks=0),
+        html.Div(id='predict-output', style={'marginTop': '10px'})
     ])
 ])
 
+# Upload callback
 @app.callback(
     [Output('upload-output', 'children'),
      Output('dropdown', 'options'),
@@ -160,6 +109,7 @@ def update_upload(contents):
 
     return ["File uploaded successfully"], optionsNum, optionsNum[0]['value'], optionsCat, optionsCat[0]['value']
 
+# Chart update callback
 @app.callback(
     [Output('corrBar', 'figure'), Output('avgBar', 'figure')],
     [Input('dropdown', 'value'), Input('radio', 'value')]
@@ -174,6 +124,7 @@ def update_charts(selected_option, select_radio):
     figAvg = px.bar(avgdf, x=select_radio, y=selected_option, text_auto=True)
     return figCorr, figAvg
 
+# Feature selection checklist callback
 @app.callback(
     [Output('feature-checkboxes', 'children')],
     [Input('upload-data', 'contents')]
@@ -182,19 +133,21 @@ def update_feature_checkboxes(contents):
     if contents is None or finaldf is None:
         raise PreventUpdate
 
-    checkboxes = [dcc.Checklist(
+    checkboxes = dcc.Checklist(
         options=[{'label': col, 'value': col} for col in finaldf.columns],
         id='feature-select',
         inline=True
-    )]
+    )
     return [checkboxes]
 
+# Train model callback
 @app.callback(
     [Output('train-output', 'children')],
     [Input('train-button', 'n_clicks')],
-    [State('feature-select', 'value')]
+    [State('feature-checkboxes', 'children'),
+     State('feature-select', 'value')]
 )
-def train_model(n_clicks, selected_features):
+def train_model(n_clicks, feature_checkboxes, selected_features):
     global trained_model
     if n_clicks == 0 or finaldf is None or not selected_features:
         raise PreventUpdate
@@ -208,14 +161,19 @@ def train_model(n_clicks, selected_features):
     r2_score = pipeline.score(X_test, y_test)
     return [f'Model trained successfully with R² score: {r2_score:.2f}']
 
+# Predict callback
 @app.callback(
     [Output('predict-output', 'children')],
     [Input('predict-button', 'n_clicks')],
     [State('predict-input', 'value')]
 )
 def predict_value(n_clicks, input_values):
+    global trained_model
     if n_clicks == 0 or not input_values:
         raise PreventUpdate
+
+    if trained_model is None:
+        return ["Error: Train the model before making predictions."]
 
     try:
         input_data = [float(x.strip()) for x in input_values.split(',')]
@@ -223,6 +181,9 @@ def predict_value(n_clicks, input_values):
         return [f'Predicted Value: {prediction[0]:.2f}']
     except ValueError:
         return ['Invalid input. Please enter numeric values separated by commas.']
+    except Exception as e:
+        return [f"Error: {str(e)}"]
 
 if __name__ == '__main__':
     app.run_server(debug=True)
+

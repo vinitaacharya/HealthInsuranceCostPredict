@@ -14,7 +14,7 @@ from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.linear_model import LinearRegression
 from dash.exceptions import PreventUpdate
 
-app = dash.Dash(__name__)
+app = dash.Dash(__name__, suppress_callback_exceptions=True)
 
 uploaded_data = None
 numdf = None
@@ -92,7 +92,7 @@ app.layout = html.Div([
                 className="selectTarget",
                 children=[
                     html.H3("Select Target Variable:"),
-                    dcc.Dropdown(id='dropdown', style={'width': '150px'})
+                    dcc.Dropdown(id='dropdown', style={'width': '150px', 'color' : 'black'})
                 ]
             ),
             html.Div(

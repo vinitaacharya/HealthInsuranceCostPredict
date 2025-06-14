@@ -1,4 +1,4 @@
-# Data Analysis and Prediction App for Health Insurance Charges 
+# Data Analysis and Prediction App for Health Insurance Charges - CS301 Group Project
 - Performed exploratory data analysis on a health insurance dataset to uncover correlations between features such as age, gender, BMI, smoking status, and insurance charges.
 
 - Trained a regression model to accurately forecast a client's insurance charges based on demographic and health-related factors including age, BMI, smoking status, gender, and region.
